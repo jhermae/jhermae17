@@ -1,0 +1,560 @@
+<html><head><base href="." />
+<style>
+  /* I'll keep all existing styles and add celebration styles */
+  /* Previous styles remain exactly the same */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* All previous styles remain unchanged */
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(45deg, #ff69b4, #ff1493); /* Keep the existing romantic gradient */
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Floating hearts styles */
+  @keyframes floatingHeart {
+    0% {
+      transform: translateY(-20px) scale(0);
+      opacity: 0;
+    }
+    20% {
+      transform: translateY(20vh) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) scale(0.8);
+      opacity: 0;
+    }
+  }
+
+  .hearts-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .heart {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    transform: rotate(45deg);
+    animation: floatingHeart 6s ease-in infinite;
+    filter: drop-shadow(0 0 5px rgba(255, 192, 203, 0.5));
+  }
+
+  .heart::before,
+  .heart::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: inherit;
+  }
+
+  .heart::before {
+    left: -10px;
+  }
+
+  .heart::after {
+    top: -10px;
+  }
+
+  .login-container {
+    background: rgba(255, 192, 203, 0.85); /* Changed to pink with transparency */
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(255, 192, 203, 0.4); /* Updated shadow to match pink theme */
+    width: 100%;
+    max-width: 400px;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
+    margin: 60px auto 0; /* Add top margin to account for the cat */
+  }
+
+  .login-container:hover {
+    transform: translateY(-5px);
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    position: relative; /* Add position relative */
+    z-index: 1; /* Add z-index to ensure text is above cat */
+  }
+
+  .input-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #ddd;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    background-color: #E6F3FF; /* Changed to light blue */
+  }
+
+  #password {
+    padding-left: 0.8rem; /* Reset to normal padding since icon is outside */
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #6b48ff;
+    background-color: #F0F8FF; /* Lighter blue when focused */
+  }
+
+  label {
+    position: absolute;
+    left: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Reduced gap between text and icon */
+  }
+
+  input:focus + label,
+  input:not(:placeholder-shown) + label {
+    top: -0.5rem;
+    left: 0.5rem;
+    font-size: 0.8rem;
+    background: pink;
+    padding: 0 0.5rem;
+    color: #6b48ff;
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Maintain consistent gap */
+  }
+
+  .icon-lock-label {
+    position: absolute;
+    left: -24px; /* Move it outside the input box */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    z-index: 1;
+    color: #666;
+    pointer-events: none;
+  }
+
+  .icon-lock {
+    display: none;
+  }
+
+  .icon-user {
+    position: absolute;
+    left: -24px; /* Position it outside the input box */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    z-index: 1;
+    color: #666;
+    pointer-events: none;
+  }
+
+  .icon-eye {
+    position: absolute;
+    right: 12px; /* Keep it on the right side */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    z-index: 1;
+    color: #666;
+    transition: color 0.3s ease;
+    cursor: pointer;
+  }
+
+  .icon-eye:hover {
+    color: #6b48ff;
+  }
+
+  button {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(45deg, #6b48ff, #ff4878);
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(107, 72, 255, 0.3);
+  }
+
+  .forgot-password {
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  .forgot-password a {
+    color: #6b48ff;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .forgot-password a:hover {
+    text-decoration: underline;
+  }
+
+  .signup-prompt {
+    text-align: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(107, 72, 255, 0.2);
+  }
+
+  .signup-prompt a {
+    color: #6b48ff;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .signup-prompt a:hover {
+    text-decoration: underline;
+  }
+
+  .social-login {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .social-login p {
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .social-icons svg {
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .social-icons svg:hover {
+    transform: scale(1.1);
+  }
+
+  /* Updating cat container styles */
+  .cat-container {
+    position: absolute;
+    top: -50px; /* Adjusted from -60px to move up slightly */
+    right: 15px; /* Adjusted from 20px to bring in slightly */
+    width: 100px; /* Reduced from 120px */
+    height: 100px; /* Reduced from 120px */
+    z-index: 1; /* Change from z-index: 2 to z-index: 1 to put it above confetti */
+    animation: catTilt 3s ease-in-out infinite; /* Adding tilt animation */
+  }
+
+  @keyframes catTilt {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  .cat-ears {
+    position: relative;
+    width: 100%;
+    height: 40px; /* Reduced from 50px */
+  }
+
+  .ear {
+    position: absolute;
+    width: 25px; /* Reduced from 30px */
+    height: 40px; /* Reduced from 50px */
+    background: #FFC0CB;
+    border-radius: 50% 50% 0 0;
+  }
+
+  .ear.left {
+    left: 15px; /* Adjusted from 20px */
+    transform: rotate(-15deg);
+  }
+
+  .ear.right {
+    right: 15px; /* Adjusted from 20px */
+    transform: rotate(15deg);
+  }
+
+  .cat-face {
+    width: 80px; /* Reduced from 100px */
+    height: 80px; /* Reduced from 100px */
+    background: #FFC0CB;
+    border-radius: 50%;
+    position: relative;
+    margin: -20px auto 0; /* Adjusted from -25px */
+  }
+
+  .cat-eyes {
+    position: relative;
+    top: 20px; /* Adjusted from 25px */
+    display: flex;
+    justify-content: space-around;
+    padding: 0 12px; /* Reduced from 15px */
+  }
+
+  .eye {
+    width: 16px; /* Reduced from 20px */
+    height: 16px; /* Reduced from 20px */
+    background: #333;
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .eye::after {
+    content: '';
+    position: absolute;
+    width: 6px; /* Reduced from 8px */
+    height: 6px; /* Reduced from 8px */
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+  }
+
+  .cat-nose {
+    width: 10px; /* Reduced from 12px */
+    height: 6px; /* Reduced from 8px */
+    background: #FF69B4;
+    border-radius: 50%;
+    position: absolute;
+    top: 35px; /* Adjusted from 45px */
+    left: 35px; /* Adjusted from 44px */
+  }
+
+  .cat-mouth {
+    width: 25px; /* Reduced from 30px */
+    height: 8px; /* Reduced from 10px */
+    border-radius: 0 0 30px 30px;
+    border: 2px solid #FF69B4;
+    border-top: 0;
+    position: absolute;
+    top: 45px; /* Adjusted from 55px */
+    left: 28px; /* Adjusted from 35px */
+  }
+
+  /* Whiskers */
+  .whiskers {
+    position: absolute;
+    top: 35px; /* Adjusted from 45px */
+    width: 100%;
+  }
+
+  .whisker {
+    width: 25px; /* Reduced from 30px */
+    height: 2px;
+    background: #FF69B4;
+    position: absolute;
+  }
+
+  .whisker.left1 { left: 0; top: 0; transform: rotate(-10deg); }
+  .whisker.left2 { left: 0; top: 8px; }
+  .whisker.left3 { left: 0; top: 16px; transform: rotate(10deg); }
+  .whisker.right1 { right: 0; top: 0; transform: rotate(10deg); }
+  .whisker.right2 { right: 0; top: 8px; }
+  .whisker.right3 { right: 0; top: 16px; transform: rotate(-10deg); }
+</style>
+</head>
+<body>
+  <div class="hearts-container"></div>
+  <div class="login-container">
+    <!-- Adding cat container -->
+    <div class="cat-container">
+      <div class="cat-ears">
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+      </div>
+      <div class="cat-face">
+        <div class="cat-eyes">
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+        </div>
+        <div class="cat-nose"></div>
+        <div class="cat-mouth"></div>
+        <div class="whiskers">
+          <div class="whisker left1"></div>
+          <div class="whisker left2"></div>
+          <div class="whisker left3"></div>
+          <div class="whisker right1"></div>
+          <div class="whisker right2"></div>
+          <div class="whisker right3"></div>
+        </div>
+      </div>
+    </div>
+    <h1>Jhermae Back</h1>
+    <form id="loginForm">
+      <div class="input-group">
+        <svg class="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <input type="text" id="username" placeholder=" " required>
+        <label for="username">Username</label>
+      </div>
+      <div class="input-group">
+        <svg class="icon-lock-label" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <input type="password" id="password" placeholder=" " required>
+        <label for="password">Password</label>
+        <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+    <div class="forgot-password">
+      <a href="https://example.com/reset-password">Forgot Password?</a>
+    </div>
+    <div class="signup-prompt">
+      <a href="https://example.com/signup">Don't have an account? Sign up</a>
+    </div>
+    <div class="social-login">
+      <p>Or login with</p>
+      <div class="social-icons">
+        <!-- Google Icon -->
+        <svg viewBox="0 0 24 24" fill="#DB4437">
+          <path d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"/>
+        </svg>
+        <!-- Facebook Icon -->
+        <svg viewBox="0 0 24 24" fill="#1877F2">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+        <!-- Apple Icon -->
+        <svg viewBox="0 0 24 24" fill="#000000">
+          <path d="M17.05 20.28c-.98.95-2.05.88-3.08.38-1.07-.52-2.04-.53-3.16 0-1.39.68-2.12.57-3.02-.38C3.97 16.31 4.24 9.92 8.26 9.6c1.22-.12 2.15.46 3.01.47.86.02 1.68-.5 3.01-.47.95.09 1.78.37 2.47.89.43.35.74.77.93 1.26-2.38 1.47-2.01 4.38.56 5.38-.56 1.62-1.31 3.22-2.19 4.15zM14.89 7.18c-.92.11-1.68-.94-2.65-.91-.21-1.24.51-2.64 1.42-3.23 1-.65 2.32-.91 2.89.21.22 1.06-.41 2.75-1.66 3.93z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      if (username && password) {
+        alert('Login successful!');
+      } else {
+        alert('Please fill in all fields');
+      }
+    });
+
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentNode.classList.add('focused');
+      });
+      
+      input.addEventListener('blur', function() {
+        if (!this.value) {
+          this.parentNode.classList.remove('focused');
+        }
+      });
+    });
+
+    // Show/hide password functionality
+    document.querySelector('.icon-eye').addEventListener('click', function() {
+      const passwordInput = document.getElementById('password');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        this.innerHTML = `
+          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+          <line x1="1" y1="1" x2="23" y2="23"></line>
+        `;
+      } else {
+        passwordInput.type = 'password';
+        this.innerHTML = `
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        `;
+      }
+    });
+
+    function createHeart() {
+      const heartsContainer = document.querySelector('.hearts-container');
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      
+      // Random starting position
+      heart.style.left = Math.random() * 100 + 'vw';
+      
+      // Random size between 10px and 30px
+      const size = Math.random() * 20 + 10;
+      heart.style.width = size + 'px';
+      heart.style.height = size + 'px';
+      
+      // Expanded color palette for hearts
+      const colors = [
+        'rgba(255, 105, 180, 0.8)', // hot pink
+        'rgba(255, 20, 147, 0.8)',  // deep pink
+        'rgba(255, 255, 255, 0.8)', // white
+        'rgba(255, 182, 193, 0.8)', // light pink
+        'rgba(255, 228, 225, 0.8)'  // misty rose
+      ];
+      heart.style.background = colors[Math.floor(Math.random() * colors.length)];
+      
+      // Random animation duration between 4 and 8 seconds
+      heart.style.animationDuration = (Math.random() * 4 + 4) + 's';
+      
+      // Random horizontal drift
+      heart.style.transform = `rotate(45deg) translateX(${Math.random() * 50 - 25}px)`;
+      
+      heartsContainer.appendChild(heart);
+      
+      // Remove heart after animation
+      setTimeout(() => {
+        heart.remove();
+      }, 8000);
+    }
+
+    // Create hearts more frequently
+    setInterval(createHeart, 200);
+  </script>
+</body>
+</html>
